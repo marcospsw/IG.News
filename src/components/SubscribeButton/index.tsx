@@ -4,11 +4,7 @@ import { api } from '../../services/api';
 import { getStripeJs } from '../../services/stripe-js';
 import styles from './styles.module.scss';
 
-interface SubscribeButtonProps {
-  priceId: string;
-}
-
-export function SubscribeButton({ priceId }: SubscribeButtonProps) {
+export function SubscribeButton() {
   const [session] = useSession();
 
   const router = useRouter();
@@ -36,13 +32,23 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
     }
   }
 
+  let subsButton = 'Subscribe Now';
+
+  if (session && session.activeSubscription) {
+    subsButton = 'Ir aos posts';
+  }
+
+  if (session && session.activeSubscription === null) {
+    subsButton = 'Renovar assinatura';
+  }
+
   return (
     <button
       type="button"
       className={styles.subscribeButton}
       onClick={handleSubscribe}
     >
-      Subscribe Now
+      {subsButton}
     </button>
   );
 }
